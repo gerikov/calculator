@@ -6,7 +6,7 @@ const Calculator = () => {
   const [calculation, setCalculation] = useState('');
   const [output, setOutput] = useState('');
   const actions = ['/', '*', '+', '-', '.'];
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const authFetch = axios.create({
     baseURL: '/api/v1',
@@ -36,7 +36,6 @@ const Calculator = () => {
     }
     const value = calculation.slice(0, -1);
     setCalculation(value);
-    console.log(value);
     if (value) {
       if (actions.includes(value[value.length - 1])) {
         setOutput(eval(value.slice(0, -1)).toString());

@@ -1,32 +1,27 @@
 import { StatusCodes } from 'http-status-codes';
 import fs from 'fs';
 
-const addValue = (req, res) => {
+const addValue = async (req, res) => {
   try {
     const { valueToSave } = req.body;
-    console.log(valueToSave);
-    fs.writeFile('memory.txt', valueToSave.toString(), (err) => {
+    await fs.writeFile('memory.txt', valueToSave.toString(), (err) => {
       if (err) {
-        console.error(err);
         res
           .status(StatusCodes.BAD_REQUEST)
           .json({ msg: 'Something went wrong' });
       }
-
-      console.log(`The ${valueToSave} saved into the memory`);
     });
     res
       .status(StatusCodes.CREATED)
       .json({ msg: 'Number is saved to the memory' });
   } catch (error) {
-    console.error(error);
+    res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Something went wrong' });
   }
 };
 
-const readValue = (req, res) => {
-  fs.readFile('memory.txt', 'utf8', (err, data) => {
+const readValue = async (req, res) => {
+  await fs.readFile('memory.txt', 'utf8', (err, data) => {
     if (err) {
-      console.error(err);
       res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Something went wrong' });
     }
 
